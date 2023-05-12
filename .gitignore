@@ -33,7 +33,6 @@
 
 # Build folder
 build/
-_deps/
 
 # IDE settings
 .vscode/

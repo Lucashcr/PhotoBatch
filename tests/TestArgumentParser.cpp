@@ -1,6 +1,6 @@
+#include <array>
 #include <gtest/gtest.h>
 #include <limits.h>
-#include <array>
 
 #include <src/ArgumentParser.h>
 #include <src/utils.h>

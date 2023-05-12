@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include "ArgumentParser.h"
 
 namespace Utils

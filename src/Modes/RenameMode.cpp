@@ -1,10 +1,7 @@
-#include <iostream>
-#include <algorithm>
-#include <filesystem>
-
-#include "../ArgumentParser.h"
 #include "RenameMode.h"
-#include "../utils.h"
+
+#include <filesystem>
+#include <vector>
 
 RenameMode::RenameMode(const std::string &filter, const std::string &folder, const std::string &preffix, int startNumber)
     : Mode{filter, folder}, m_Preffix{preffix}, m_StartNumber{startNumber}
@@ -19,153 +16,52 @@ const std::string &RenameMode::GetModeName() const
 
 void RenameMode::RunImpl()
 {
-    std::cout << RenameMode::GetModeName() << "Funcionando..." << std::endl;
-}
+    std::cout << "-----------------PHOTOBATCH-----------------" << std::endl;
+    std::cout << "Modo: Renomear" << std::endl;
+    std::cout << "Pasta: " << GetFolder() << std::endl;
+    std::cout << "Filtro: " << GetFilter() << std::endl;
+    std::cout << "Prefixo: " << m_Preffix << std::endl;
+    std::cout << "Número inicial: " << m_StartNumber << std::endl;
+    std::cout << "--------------------------------------------" << std::endl;
 
-std::unique_ptr<Mode> CreateMode(const ArgumentParser &argParser)
-{
-    const bool bConvertMode = argParser.GetFlag(Utils::Args::Flags::Convert);
-    const bool bRenameMode = argParser.GetFlag(Utils::Args::Flags::Rename);
-    const bool bResizeMode = argParser.GetFlag(Utils::Args::Flags::Resize);
-    const bool bScaleMode = argParser.GetFlag(Utils::Args::Flags::Scale);
+    std::vector<std::filesystem::path> filesToRename;
+    int numSkippedFiles = 0;
 
-    const bool bHelp = argParser.GetFlag(Utils::Args::Flags::Help);
-
-    /**
-     *
-     *  ^ -> OU EXCLUSIVO
-     *
-     *  Lógica
-     *      1 ^ 1 == 0
-     *      1 ^ 0 == 1
-     *      0 ^ 1 == 1
-     *      0 ^ 0 == 0
-     *
-     */
-
-    if (!(bConvertMode ^ bRenameMode ^ bResizeMode ^ bScaleMode))
+    for (const std::filesystem::directory_entry &entry : std::filesystem::directory_iterator(GetFolder()))
     {
-        throw std::invalid_argument("Somente um modo pode estar ativo");
-    }
+        const bool bIsFile = std::filesystem::is_regular_file(entry.path());
+        const bool bMatchFilter = GetFilter().empty() || (Utils::Funcs::ToLower(entry.path().string()).find(GetFilter()) != std::string::npos);
 
-    const std::string filter = argParser.GetOptionAs<std::string>(Utils::Args::Options::Filter);
-    if (!filter.empty())
-    {
-        if (Utils::Funcs::HasInvalidChars(filter))
+        if (bIsFile && bMatchFilter)
         {
-            throw std::invalid_argument("O filter não pode conter os caracteres " + Utils::Funcs::GetInvalidChars());
+            filesToRename.push_back(entry.path());
+        }
+        else
+        {
+            numSkippedFiles++;
         }
     }
 
-    const std::string folder = argParser.GetOptionAs<std::string>(Utils::Args::Options::Folder);
-    if (folder.empty())
+    std::cout << GetModeName() << "Número de arquivos encontrados: " << filesToRename.size() << std::endl;
+    std::cout << GetModeName() << "Número de arquivos ignorados: " << numSkippedFiles << std::endl;
+
+    int currentNumber = m_StartNumber;
+    for (std::filesystem::path &filepath : filesToRename)
     {
-        throw std::invalid_argument("A pasta não pode estar em branco...");
-    }
-
-    if (!std::filesystem::exists(folder))
-    {
-        throw std::invalid_argument("A pasta informada não existe...");
-    }
-
-    if (bConvertMode)
-    {
-        const std::string from = argParser.GetOptionAs<std::string>(Utils::Args::Options::From);
-        const std::string to = argParser.GetOptionAs<std::string>(Utils::Args::Options::To);
-
-        const std::array<std::string, 2> convertOptions = {"jpg", "png"};
-
-        const bool bIsFromValid = find(
-            begin(convertOptions),
-            end(convertOptions),
-            from);
-
-        const bool bIsToValid = find(
-            begin(convertOptions),
-            end(convertOptions),
-            from);
-
-        if (!bIsFromValid || !bIsToValid)
-        {
-            throw std::invalid_argument("As opções From e To precisam ser \".png\" ou \".jpg\"...");
-        }
-        if (from == to)
-        {
-            throw std::invalid_argument("As opções From e To precisam ser diferentes...");
-        }
-    }
-
-    if (bRenameMode)
-    {
-        int startNumber = -1;
+        const std::string newFileName = m_Preffix + std::to_string(currentNumber) + filepath.extension().string();
 
         try
         {
-            startNumber = argParser.GetOptionAs<int>(Utils::Args::Options::StartNumber);
+            std::filesystem::rename(filepath, filepath.parent_path() / newFileName);
+            std::cout << GetModeName() << filepath.filename() << " -> " << newFileName << std::endl;
+            currentNumber++;
         }
-        catch (const std::invalid_argument &)
+        catch (std::exception &exception)
         {
-            throw std::invalid_argument("O valor informado para o StartNumber precisa ser um valor numérico...");
-        }
-
-        if (startNumber < 0)
-        {
-            throw std::invalid_argument("O valor informado para a opção StartNumber deve ser maior que 0...");
-        }
-
-        std::string preffix = argParser.GetOptionAs<std::string>(Utils::Args::Options::Preffix);
-        if (Utils::Funcs::HasInvalidChars(preffix))
-        {
-            throw std::invalid_argument("A opção Preffix não pode conter os caracteres " + Utils::Funcs::GetInvalidChars());
+            std::cout << GetModeName() << "Erro ao renomear " << filepath.filename() << ":\n"
+                      << exception.what() << std::endl;
         }
     }
 
-    if (bResizeMode)
-    {
-        int width = 0, height = 0;
-
-        try
-        {
-            height = argParser.GetOptionAs<int>(Utils::Args::Options::Height);
-            width = argParser.GetOptionAs<int>(Utils::Args::Options::Width);
-        }
-        catch (const std::invalid_argument &)
-        {
-            throw std::invalid_argument("O valores informados para o Width e o Height precisam ser valores numéricos...");
-        }
-
-        if (width <= 0 || height <= 0)
-        {
-            throw std::invalid_argument("Os valores informados para o Width e Height devem ser maiores que 0...");
-        }
-        if (filter.empty())
-        {
-            throw std::invalid_argument("Filter não pode estar vazio no modo Resize...");
-        }
-    }
-
-    if (bScaleMode)
-    {
-        float amount = 0;
-
-        try
-        {
-            amount = argParser.GetOptionAs<float>(Utils::Args::Options::Amount);
-        }
-        catch (const std::invalid_argument &)
-        {
-            throw std::invalid_argument("O valor informado para o Amount precisa ser um valor numérico...");
-        }
-
-        if (amount <= 0.0f)
-        {
-            throw std::invalid_argument("O valor informado para o Amount precisa ser maior do que zero...");
-        }
-        if (filter.empty())
-        {
-            throw std::invalid_argument("Filter não pode estar vazio no modo Scale...");
-        }
-    }
-
-    return nullptr;
+    std::cout << GetModeName() << "Arquivos renomeados com sucesso!" << std::endl;
 }
