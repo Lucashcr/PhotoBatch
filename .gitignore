@@ -37,3 +37,6 @@ _deps/
 
 # IDE settings
 .vscode/
+
+#aliases
+.aliases.sh

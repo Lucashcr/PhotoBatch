@@ -2,9 +2,11 @@
 #include <fstream>
 #include <iomanip>
 
-#include "src/ArgumentParser.h"
-#include "src/RenameMode.h"
-#include "src/utils.h"
+#include "PhotoBatch.h"
+
+#include "ArgumentParser.h"
+#include "Modes/RenameMode.h"
+#include "utils.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,22 +30,22 @@ int main(int argc, char *argv[])
     argParser.RegisterOption(Utils::Args::Options::To);
     argParser.RegisterOption(Utils::Args::Options::Width);
 
-    std::ifstream helpfile;
-    helpfile.open("helpmessage.txt");
+    // std::ifstream helpfile;
+    // helpfile.open("static/helpmessage.txt");
 
-    if (!helpfile)
-    {
-        std::cerr << "Couldn't open help message file..." << std::endl;
-        exit(1);
-    }
+    // if (!helpfile)
+    // {
+    //     std::cerr << "Couldn't open help message file..." << std::endl;
+    //     exit(1);
+    // }
 
-    std::string helpmessage, line;
-    while (!helpfile.eof())
-    {
-        getline(helpfile, line);
-        helpmessage += line + "\n";
-    }
-    helpfile.close();
+    // std::string helpmessage, line;
+    // while (!helpfile.eof())
+    // {
+    //     getline(helpfile, line);
+    //     helpmessage += line + "\n";
+    // }
+    // helpfile.close();
 
     argParser.SetHelpMessage(helpmessage);
 

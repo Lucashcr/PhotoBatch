@@ -1,13 +1,13 @@
+#include <iostream>
 #include <algorithm>
 #include <filesystem>
 
-#include "ArgumentParser.h"
+#include "../ArgumentParser.h"
 #include "RenameMode.h"
-#include "utils.h"
+#include "../utils.h"
 
-RenameMode::RenameMode(const std::string &filter, const std::string &folder, const std::string &preffix, int startNumber) : Mode(filter, folder),
-                                                                                                                            m_Preffix{preffix},
-                                                                                                                            m_StartNumber{startNumber}
+RenameMode::RenameMode(const std::string &filter, const std::string &folder, const std::string &preffix, int startNumber)
+    : Mode{filter, folder}, m_Preffix{preffix}, m_StartNumber{startNumber}
 {
 }
 

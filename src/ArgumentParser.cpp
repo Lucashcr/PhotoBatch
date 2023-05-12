@@ -1,8 +1,7 @@
 #include "ArgumentParser.h"
 #include "utils.h"
 
-
-void ArgumentParser::RegisterFlag(const std::string& flag)
+void ArgumentParser::RegisterFlag(const std::string &flag)
 {
     if (!flag.empty() && !Utils::Funcs::HasWhiteSpaces(flag))
     {
@@ -10,7 +9,7 @@ void ArgumentParser::RegisterFlag(const std::string& flag)
     }
 }
 
-bool ArgumentParser::IsFlagRegistered(const std::string& flag) const
+bool ArgumentParser::IsFlagRegistered(const std::string &flag) const
 {
     if (!flag.empty())
     {
@@ -22,7 +21,7 @@ bool ArgumentParser::IsFlagRegistered(const std::string& flag) const
     }
 }
 
-bool ArgumentParser::GetFlag(const std::string& flag) const
+bool ArgumentParser::GetFlag(const std::string &flag) const
 {
     if (!flag.empty())
     {
@@ -32,19 +31,19 @@ bool ArgumentParser::GetFlag(const std::string& flag) const
             return flagIterator->second;
         }
     }
-    
+
     return false;
 }
 
-void ArgumentParser::RegisterOption(const std::string& option)
+void ArgumentParser::RegisterOption(const std::string &option)
 {
     if (!option.empty() && !Utils::Funcs::HasWhiteSpaces(option))
     {
         m_Options[option] = "";
-    }   
+    }
 }
 
-bool ArgumentParser::IsOptionRegistered(const std::string& option) const
+bool ArgumentParser::IsOptionRegistered(const std::string &option) const
 {
     if (!option.empty())
     {
@@ -56,7 +55,7 @@ bool ArgumentParser::IsOptionRegistered(const std::string& option) const
     }
 }
 
-const std::string& ArgumentParser::GetOption(const std::string& option) const
+const std::string &ArgumentParser::GetOption(const std::string &option) const
 {
     if (!option.empty())
     {
@@ -70,9 +69,9 @@ const std::string& ArgumentParser::GetOption(const std::string& option) const
     return EmptyOption;
 }
 
-float ArgumentParser::GetOptionAsFloat(const std::string& option) const
+float ArgumentParser::GetOptionAsFloat(const std::string &option) const
 {
-    const std::string& optionValue = GetOption(option);
+    const std::string &optionValue = GetOption(option);
     if (!optionValue.empty())
     {
         return stof(optionValue);
@@ -80,9 +79,9 @@ float ArgumentParser::GetOptionAsFloat(const std::string& option) const
     return -1;
 }
 
-int ArgumentParser::GetOptionAsInt(const std::string& option) const
+int ArgumentParser::GetOptionAsInt(const std::string &option) const
 {
-    const std::string& optionValue = GetOption(option);
+    const std::string &optionValue = GetOption(option);
     if (!optionValue.empty())
     {
         return stoi(optionValue);
@@ -90,26 +89,26 @@ int ArgumentParser::GetOptionAsInt(const std::string& option) const
     return -1;
 }
 
-template<>
-float ArgumentParser::GetOptionAs(const std::string& option) const { return GetOptionAsFloat(option); }
+template <>
+float ArgumentParser::GetOptionAs(const std::string &option) const { return GetOptionAsFloat(option); }
 
-template<>
-int ArgumentParser::GetOptionAs(const std::string& option) const { return GetOptionAsInt(option); }
+template <>
+int ArgumentParser::GetOptionAs(const std::string &option) const { return GetOptionAsInt(option); }
 
-template<>
-std::string ArgumentParser::GetOptionAs(const std::string& option) const { return GetOption(option); }
+template <>
+std::string ArgumentParser::GetOptionAs(const std::string &option) const { return GetOption(option); }
 
-void ArgumentParser::SetHelpMessage(const std::string& helpMessage)
+void ArgumentParser::SetHelpMessage(const std::string &helpMessage)
 {
     m_helpMessage = helpMessage;
 }
 
-const std::string& ArgumentParser::GetHelpMessage() const
+const std::string &ArgumentParser::GetHelpMessage() const
 {
     return ArgumentParser::m_helpMessage;
 }
 
-void ArgumentParser::Parse(int argc, char* argv[]) 
+void ArgumentParser::Parse(int argc, char *argv[])
 {
     if (argc > 1 && argv != nullptr)
     {
