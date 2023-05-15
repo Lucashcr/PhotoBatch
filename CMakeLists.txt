@@ -13,4 +13,8 @@ add_executable(PhotoBatch
 
 set_target_properties(PhotoBatch PROPERTIES CXX_STANDARD 17)
 
+set(FETCHCONTENT_QUIET OFF CACHE BOOL "Desabilita o modo quiet do FetchContent" FORCE)
+include(FetchContent)
+
 add_subdirectory(tests)
+add_subdirectory(externals)

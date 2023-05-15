@@ -23,10 +23,10 @@ const std::string &Mode::GetFolder() const
 
 void Mode::Run()
 {
-    const auto start = std::chrono::system_clock::now();
+    auto start = std::chrono::system_clock::now();
     RunImpl();
-    const auto end = std::chrono::system_clock::now();
-    const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << GetModeName() << "Tempo gasto: " << elapsed.count() << "ms" << std::endl;
 }
 
