@@ -32,7 +32,7 @@ void RenameMode::RunImpl()
         try
         {
             std::filesystem::rename(filepath, filepath.parent_path() / newFileName);
-            std::cout << GetModeName() << filepath.filename() << " -> " << newFileName << std::endl;
+            std::cout << GetModeName() << "Convertido com sucesso para " << filepath.parent_path() / newFileName << std::endl;
             currentNumber++;
         }
         catch (std::exception &exception)
