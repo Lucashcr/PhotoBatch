@@ -34,17 +34,15 @@ std::vector<std::filesystem::path> Mode::GetFiles(const std::filesystem::path &e
         const bool bMatchExtension = extension.empty() || (Utils::Funcs::ToLower(entry.path().extension()) == extension);
 
         if (bIsFile && bMatchFilter && bMatchExtension)
-        {
             files.push_back(entry.path());
-        }
         else
-        {
             numSkippedFiles++;
-        }
     }
 
     std::cout << GetModeName() << "Número de arquivos encontrados: " << files.size() << std::endl;
     std::cout << GetModeName() << "Número de arquivos ignorados: " << numSkippedFiles << std::endl;
+
+    return files;
 }
 
 void Mode::Run()
