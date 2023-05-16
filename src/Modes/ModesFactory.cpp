@@ -62,7 +62,6 @@ std::unique_ptr<Mode> CreateMode(const ArgumentParser &argParser)
             {"jpg", ConvertMode::Format::JPG},
             {"png", ConvertMode::Format::PNG}};
 
-        // const bool bIsFromValid = convertOptionsMap.find(from) == end(convertOptionsMap);
         const bool bIsFromValid = convertOptionsMap.find(from) != end(convertOptionsMap);
         const bool bIsToValid = convertOptionsMap.find(to) != end(convertOptionsMap);
 
