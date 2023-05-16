@@ -73,7 +73,7 @@ void ConvertMode::RunImpl()
             }
 
             if (writeResult == 0)
-                std::cout << GetModeName() << "Erro ao converter " << filepath << std::endl;
+                std::cerr << GetModeName() << "Erro ao converter " << filepath << std::endl;
             else
                 std::cout << GetModeName() << "Convertido com sucesso para " << destinyFilepath << std::endl;
 
@@ -81,7 +81,9 @@ void ConvertMode::RunImpl()
         }
         else
         {
-            std::cout << GetModeName() << "Erro ao carregar " << filepath << std::endl;
+            std::cerr << GetModeName() << "Erro ao carregar " << filepath << std::endl;
         }
     }
+
+    std::cout << GetModeName() << "Arquivos convertidos com sucesso!" << std::endl;
 }

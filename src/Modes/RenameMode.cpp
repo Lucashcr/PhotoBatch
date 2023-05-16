@@ -37,7 +37,7 @@ void RenameMode::RunImpl()
         }
         catch (std::exception &exception)
         {
-            std::cout << GetModeName() << "Erro ao renomear " << filepath.filename() << ":\n"
+            std::cerr << GetModeName() << "Erro ao renomear " << filepath.filename() << ":\n"
                       << exception.what() << std::endl;
         }
     }
