@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "../ArgumentParser.h"
+#include "../Image.h"
 #include "../utils.h"
 
 class Mode

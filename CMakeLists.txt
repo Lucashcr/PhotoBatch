@@ -6,6 +6,7 @@ add_executable(PhotoBatch
     "src/PhotoBatch.cpp"
     "src/ArgumentParser.cpp"
     "src/utils.cpp"
+    "src/Image.cpp"
     
     "src/Modes/Mode.cpp"
     "src/Modes/RenameMode.cpp"

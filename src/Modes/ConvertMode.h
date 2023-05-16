@@ -6,13 +6,7 @@ class ConvertMode final : public Mode
 {
 
 public:
-    enum class Format
-    {
-        JPG,
-        PNG
-    };
-
-    ConvertMode(const std::string &filter, const std::string &folder, Format fromFormat, Format toFormat);
+    ConvertMode(const std::string &filter, const std::string &folder, Image::Format fromFormat, Image::Format toFormat);
 
     const std::string &GetModeName() const override;
 
@@ -20,6 +14,6 @@ protected:
     void RunImpl() override;
 
 private:
-    Format m_FromFormat;
-    Format m_ToFormat;
+    Image::Format m_FromFormat;
+    Image::Format m_ToFormat;
 };

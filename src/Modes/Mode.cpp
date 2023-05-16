@@ -36,7 +36,8 @@ std::vector<std::filesystem::path> Mode::GetFiles(const std::filesystem::path &e
     }
 
     std::cout << GetModeName() << "Número de arquivos encontrados: " << files.size() << std::endl;
-    std::cout << GetModeName() << "Número de arquivos ignorados: " << numSkippedFiles << std::endl;
+    std::cout << GetModeName() << "Número de arquivos ignorados: " << numSkippedFiles << std::endl
+              << std::endl;
 
     return files;
 }

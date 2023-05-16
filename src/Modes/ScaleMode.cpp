@@ -1,7 +1,5 @@
 #include "ScaleMode.h"
 
-#include <stb_image.h>
-
 ScaleMode::ScaleMode(const std::string &filter, const std::string &folder,
                      float scaleFactor)
     : ResizeMode{filter, folder}, m_ScaleFactor{scaleFactor}
@@ -27,13 +25,17 @@ void ScaleMode::RunImpl()
     {
         std::cout << GetModeName() << "Escalando " << filepath << std::endl;
 
-        int width, height;
-        stbi_info(filepath.string().c_str(), &width, &height, nullptr);
+        Image img{filepath};
+        img.scale(m_ScaleFactor);
 
-        const int newWidth = width * m_ScaleFactor;
-        const int newHeight = height * m_ScaleFactor;
-        std::cout << GetModeName() << "Nova dimensão da imagem " << newWidth << "x" << newHeight << std::endl;
+        std::cout << GetModeName() << "Escalonado com sucesso!\n\n";
+        // int width, height;
+        // stbi_info(filepath.string().c_str(), &width, &height, nullptr);
 
-        ResizeImage(filepath, newWidth, newHeight);
+        // const int newWidth = width * m_ScaleFactor;
+        // const int newHeight = height * m_ScaleFactor;
+        // std::cout << GetModeName() << "Nova dimensão da imagem " << newWidth << "x" << newHeight << std::endl;
+
+        // ResizeImage(filepath, newWidth, newHeight);
     }
 }

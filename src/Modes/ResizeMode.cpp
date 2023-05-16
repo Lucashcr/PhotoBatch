@@ -1,11 +1,11 @@
 #include "ResizeMode.h"
 
 // #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-#define STB_IMAGE_RESIZE_IMPLEMENTATION
-#include <stb_image_resize.h>
+// #include <stb_image.h>
+// #define STB_IMAGE_RESIZE_IMPLEMENTATION
+// #include <stb_image_resize.h>
 // #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb_image_write.h>
+// #include <stb_image_write.h>
 
 ResizeMode::ResizeMode(const std::string &filter, const std::string &folder, int width, int height)
     : Mode{filter, folder}, m_Width{width}, m_Height{height}
@@ -20,47 +20,53 @@ const std::string &ResizeMode::GetModeName() const
 
 void ResizeMode::ResizeImage(const std::filesystem::path &filepath, int newWidth, int newHeight) const
 {
-    int width, height, numComps, numCompReq = 4;
-    if (unsigned char *data = stbi_load(filepath.string().c_str(), &width, &height, &numComps, 4))
-    {
-        const int numOutputPixels = newWidth * newHeight * numCompReq;
-        unsigned char outputData[numOutputPixels] = {0};
+    std::cout << GetModeName() << "Redimensionando " << filepath << std::endl;
 
-        const int resizeResult = stbir_resize_uint8(
-            data, width, height, 0,
-            outputData, newWidth, newHeight, 0, numCompReq);
+    Image img{filepath};
+    img.resize(newWidth, newHeight);
 
-        if (resizeResult == 0)
-            std::cerr << GetModeName() << "Erro ao redimensionar " << filepath << std::endl;
-        else
-        {
-            int writeResult = 1;
+    std::cout << GetModeName() << "Redimensionada com sucesso!\n\n";
+    // int width, height, numComps, numCompReq = 4;
+    // if (unsigned char *data = stbi_load(filepath.string().c_str(), &width, &height, &numComps, 4))
+    // {
+    //     const int numOutputPixels = newWidth * newHeight * numCompReq;
+    //     unsigned char outputData[numOutputPixels] = {0};
 
-            const std::string extension = filepath.extension().string();
-            if (extension == ".jpg")
-            {
-                writeResult = stbi_write_jpg(filepath.string().c_str(), newWidth, newHeight, numCompReq, outputData, 100);
-            }
-            else if (extension == ".png")
-            {
-                writeResult = stbi_write_png(filepath.string().c_str(), newWidth, newHeight, numCompReq, outputData, 0);
-            }
-            else
-            {
-                std::cerr << GetModeName() << "Formato " << extension << " não suportado!" << std::endl;
-                return;
-            }
+    //     const int resizeResult = stbir_resize_uint8(
+    //         data, width, height, 0,
+    //         outputData, newWidth, newHeight, 0, numCompReq);
 
-            if (writeResult == 0)
-                std::cerr << GetModeName() << "Erro ao escrever " << filepath << std::endl;
+    //     if (resizeResult == 0)
+    //         std::cerr << GetModeName() << "Erro ao redimensionar " << filepath << std::endl;
+    //     else
+    //     {
+    //         int writeResult = 1;
 
-            stbi_image_free(data);
-        }
-    }
-    else
-    {
-        std::cerr << "Erro ao carregar imagem" << std::endl;
-    }
+    //         const std::string extension = filepath.extension().string();
+    //         if (extension == ".jpg")
+    //         {
+    //             writeResult = stbi_write_jpg(filepath.string().c_str(), newWidth, newHeight, numCompReq, outputData, 100);
+    //         }
+    //         else if (extension == ".png")
+    //         {
+    //             writeResult = stbi_write_png(filepath.string().c_str(), newWidth, newHeight, numCompReq, outputData, 0);
+    //         }
+    //         else
+    //         {
+    //             std::cerr << GetModeName() << "Formato " << extension << " não suportado!" << std::endl;
+    //             return;
+    //         }
+
+    //         if (writeResult == 0)
+    //             std::cerr << GetModeName() << "Erro ao escrever " << filepath << std::endl;
+
+    //         stbi_image_free(data);
+    //     }
+    // }
+    // else
+    // {
+    //     std::cerr << "Erro ao carregar imagem" << std::endl;
+    // }
 }
 
 void ResizeMode::RunImpl()
