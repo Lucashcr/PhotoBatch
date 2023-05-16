@@ -9,6 +9,7 @@ add_executable(PhotoBatch
     
     "src/Modes/Mode.cpp"
     "src/Modes/RenameMode.cpp"
+    "src/Modes/ConvertMode.cpp"
 )
 
 set_target_properties(PhotoBatch PROPERTIES CXX_STANDARD 17)
@@ -18,3 +19,5 @@ include(FetchContent)
 
 add_subdirectory(tests)
 add_subdirectory(externals)
+
+target_link_libraries(PhotoBatch PRIVATE stb)

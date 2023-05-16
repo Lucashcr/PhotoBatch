@@ -1,6 +1,6 @@
 FetchContent_Declare(
     stbcontents
-    GIT_REPOSITORY https://github.com/nothings/stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
 )
 FetchContent_MakeAvailable(stbcontents)
 
