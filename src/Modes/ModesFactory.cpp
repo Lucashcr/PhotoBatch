@@ -58,17 +58,13 @@ std::unique_ptr<Mode> CreateMode(const ArgumentParser &argParser)
         const std::string from = argParser.GetOptionAs<std::string>(Utils::Args::Options::From);
         const std::string to = argParser.GetOptionAs<std::string>(Utils::Args::Options::To);
 
-        const std::array<std::string, 2> convertOptions = {"jpg", "png"};
+        const std::map<std::string, ConvertMode::Format> convertOptionsMap = {
+            {"jpg", ConvertMode::Format::JPG},
+            {"png", ConvertMode::Format::PNG}};
 
-        const bool bIsFromValid = find(
-            begin(convertOptions),
-            end(convertOptions),
-            from);
-
-        const bool bIsToValid = find(
-            begin(convertOptions),
-            end(convertOptions),
-            from);
+        // const bool bIsFromValid = convertOptionsMap.find(from) == end(convertOptionsMap);
+        const bool bIsFromValid = convertOptionsMap.find(from) != end(convertOptionsMap);
+        const bool bIsToValid = convertOptionsMap.find(to) != end(convertOptionsMap);
 
         if (!bIsFromValid || !bIsToValid)
         {
@@ -78,10 +74,6 @@ std::unique_ptr<Mode> CreateMode(const ArgumentParser &argParser)
         {
             throw std::invalid_argument("As opções From e To precisam ser diferentes...");
         }
-
-        const std::map<std::string, ConvertMode::Format> convertOptionsMap = {
-            {"jpg", ConvertMode::Format::JPG},
-            {"png", ConvertMode::Format::PNG}};
 
         return std::make_unique<ConvertMode>(
             filter,
