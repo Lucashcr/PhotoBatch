@@ -4,6 +4,7 @@
 
 #include "ArgumentParser.h"
 #include "Modes/Mode.h"
+#include "Modes/ModesFactory.h"
 #include "utils.h"
 
 int main(int argc, char *argv[])

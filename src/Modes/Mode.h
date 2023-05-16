@@ -29,5 +29,3 @@ private:
     std::string m_Filter;
     std::string m_Folder;
 };
-
-std::unique_ptr<Mode> CreateMode(const ArgumentParser &argParser);
