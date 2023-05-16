@@ -5,6 +5,7 @@
 #include <filesystem>
 
 #include "RenameMode.h"
+#include "ConvertMode.h"
 
 Mode::Mode(const std::string &filter, const std::string &folder)
     : m_Filter{filter}, m_Folder{folder}
@@ -19,6 +20,31 @@ const std::string &Mode::GetFilter() const
 const std::string &Mode::GetFolder() const
 {
     return m_Folder;
+}
+
+std::vector<std::filesystem::path> Mode::GetFiles(const std::filesystem::path &extension) const
+{
+    std::vector<std::filesystem::path> files;
+    int numSkippedFiles = 0;
+
+    for (const std::filesystem::directory_entry &entry : std::filesystem::directory_iterator(GetFolder()))
+    {
+        const bool bIsFile = std::filesystem::is_regular_file(entry.path());
+        const bool bMatchFilter = GetFilter().empty() || (Utils::Funcs::ToLower(entry.path().string()).find(GetFilter()) != std::string::npos);
+        const bool bMatchExtension = extension.empty() || (Utils::Funcs::ToLower(entry.path().extension()) == extension);
+
+        if (bIsFile && bMatchFilter && bMatchExtension)
+        {
+            files.push_back(entry.path());
+        }
+        else
+        {
+            numSkippedFiles++;
+        }
+    }
+
+    std::cout << GetModeName() << "Número de arquivos encontrados: " << files.size() << std::endl;
+    std::cout << GetModeName() << "Número de arquivos ignorados: " << numSkippedFiles << std::endl;
 }
 
 void Mode::Run()
@@ -101,6 +127,16 @@ std::unique_ptr<Mode> CreateMode(const ArgumentParser &argParser)
         {
             throw std::invalid_argument("As opções From e To precisam ser diferentes...");
         }
+
+        const std::map<std::string, ConvertMode::Format> convertOptionsMap = {
+            {"jpg", ConvertMode::Format::JPG},
+            {"png", ConvertMode::Format::PNG}};
+
+        return std::make_unique<ConvertMode>(
+            filter,
+            folder,
+            convertOptionsMap.at(from),
+            convertOptionsMap.at(to));
     }
 
     if (bRenameMode)

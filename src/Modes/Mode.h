@@ -1,7 +1,9 @@
 #pragma once
 
-#include <string>
+#include <filesystem>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "../ArgumentParser.h"
 #include "../utils.h"
@@ -20,6 +22,7 @@ public:
 
 protected:
     virtual void RunImpl() = 0;
+    std::vector<std::filesystem::path> GetFiles(const std::filesystem::path &extension = "") const;
 
 private:
     std::string m_Filter;
