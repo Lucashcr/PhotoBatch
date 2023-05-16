@@ -1,10 +1,5 @@
 #include "ConvertMode.h"
 
-// #define STB_IMAGE_IMPLEMENTATION
-// #include <stb_image.h>
-// #define STB_IMAGE_WRITE_IMPLEMENTATION
-// #include <stb_image_write.h>
-
 ConvertMode::ConvertMode(const std::string &filter, const std::string &folder, Image::Format fromFormat, Image::Format toFormat)
     : Mode{filter, folder}, m_FromFormat{fromFormat}, m_ToFormat{toFormat}
 {
@@ -31,7 +26,7 @@ void ConvertMode::RunImpl()
     {
         std::cout << GetModeName() << "Convertendo " << filepath << std::endl;
 
-        Image img{filepath};
+        Image img{filepath, 3};
         img.convert(m_ToFormat);
 
         std::cout << GetModeName() << "Convertido com sucesso!\n\n";

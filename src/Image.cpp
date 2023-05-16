@@ -28,10 +28,10 @@ std::ostream &operator<<(std::ostream &out, Image::Format format)
     return out;
 }
 
-Image::Image(const std::filesystem::path &filepath)
-    : m_filepath{filepath}
+Image::Image(const std::filesystem::path &filepath, int reqComps)
+    : m_filepath{filepath}, m_reqComps{reqComps}
 {
-    m_data = stbi_load(filepath.string().c_str(), &m_width, &m_height, &m_numComps, 3);
+    m_data = stbi_load(filepath.string().c_str(), &m_width, &m_height, &m_numComps, m_reqComps);
 }
 
 Image::~Image()
@@ -52,10 +52,10 @@ void Image::writeFile(const std::filesystem::path &filepath, Image::Format forma
     switch (format)
     {
     case Image::Format::JPG:
-        writeResult = stbi_write_jpg(filepath.string().c_str(), m_width, m_height, m_numComps, m_data, 100);
+        writeResult = stbi_write_jpg(filepath.string().c_str(), m_width, m_height, m_reqComps, m_data, 100);
         break;
     case Image::Format::PNG:
-        writeResult = stbi_write_png(filepath.string().c_str(), m_width, m_height, m_numComps, m_data, 0);
+        writeResult = stbi_write_png(filepath.string().c_str(), m_width, m_height, m_reqComps, m_data, 0);
         break;
     default:
         std::cerr << "Formato não suportado!" << std::endl;
@@ -88,12 +88,12 @@ void Image::resize(int width, int height)
         return;
     }
 
-    const int numOutputPixels = width * height * m_numComps;
+    const int numOutputPixels = width * height * m_reqComps;
     unsigned char outputData[numOutputPixels] = {0};
 
     const int resizeResult = stbir_resize_uint8(
         m_data, m_width, m_height, 0,
-        outputData, width, height, 0, m_numComps);
+        outputData, width, height, 0, m_reqComps);
 
     if (resizeResult == 0)
         std::cerr << "Erro ao redimensionar " << m_filepath << std::endl;

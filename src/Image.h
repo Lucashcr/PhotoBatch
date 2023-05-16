@@ -12,7 +12,7 @@ public:
         PNG
     };
 
-    Image(const std::filesystem::path &filepath);
+    Image(const std::filesystem::path &filepath, int reqComps);
     ~Image();
 
     void convert(Format toFormat);
@@ -23,6 +23,7 @@ private:
     int m_width;
     int m_height;
     int m_numComps;
+    int m_reqComps;
     unsigned char *m_data;
     std::filesystem::path m_filepath;
 

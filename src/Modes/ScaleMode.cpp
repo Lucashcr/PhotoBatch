@@ -25,17 +25,9 @@ void ScaleMode::RunImpl()
     {
         std::cout << GetModeName() << "Escalando " << filepath << std::endl;
 
-        Image img{filepath};
+        Image img{filepath, 4};
         img.scale(m_ScaleFactor);
 
         std::cout << GetModeName() << "Escalonado com sucesso!\n\n";
-        // int width, height;
-        // stbi_info(filepath.string().c_str(), &width, &height, nullptr);
-
-        // const int newWidth = width * m_ScaleFactor;
-        // const int newHeight = height * m_ScaleFactor;
-        // std::cout << GetModeName() << "Nova dimensão da imagem " << newWidth << "x" << newHeight << std::endl;
-
-        // ResizeImage(filepath, newWidth, newHeight);
     }
 }
