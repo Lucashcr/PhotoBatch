@@ -1,8 +1,5 @@
 #include "RenameMode.h"
 
-#include <filesystem>
-#include <vector>
-
 RenameMode::RenameMode(const std::string &filter, const std::string &folder, const std::string &preffix, int startNumber)
     : Mode{filter, folder}, m_Preffix{preffix}, m_StartNumber{startNumber}
 {
@@ -32,7 +29,7 @@ void RenameMode::RunImpl()
         try
         {
             std::filesystem::rename(filepath, filepath.parent_path() / newFileName);
-            std::cout << GetModeName() << "Convertido com sucesso para " << filepath.parent_path() / newFileName << std::endl;
+            std::cout << GetModeName() << "Renomeado com sucesso para " << filepath.parent_path() / newFileName << std::endl;
             currentNumber++;
         }
         catch (std::exception &exception)

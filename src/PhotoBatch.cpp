@@ -5,6 +5,7 @@
 #include "ArgumentParser.h"
 #include "Modes/RenameMode.h"
 #include "Modes/ConvertMode.h"
+#include "Modes/ResizeMode.h"
 #include "utils.h"
 
 int main(int argc, char *argv[])

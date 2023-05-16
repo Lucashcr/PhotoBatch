@@ -2,10 +2,10 @@
 
 #include <algorithm>
 #include <chrono>
-#include <filesystem>
 
-#include "RenameMode.h"
 #include "ConvertMode.h"
+#include "RenameMode.h"
+#include "ResizeMode.h"
 
 Mode::Mode(const std::string &filter, const std::string &folder)
     : m_Filter{filter}, m_Folder{folder}
@@ -186,6 +186,8 @@ std::unique_ptr<Mode> CreateMode(const ArgumentParser &argParser)
         {
             throw std::invalid_argument("Filter não pode estar vazio no modo Resize...");
         }
+
+        return std::make_unique<ResizeMode>(filter, folder, width, height);
     }
 
     if (bScaleMode)
