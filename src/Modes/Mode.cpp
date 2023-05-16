@@ -6,6 +6,7 @@
 #include "ConvertMode.h"
 #include "RenameMode.h"
 #include "ResizeMode.h"
+#include "ScaleMode.h"
 
 Mode::Mode(const std::string &filter, const std::string &folder)
     : m_Filter{filter}, m_Folder{folder}
@@ -211,6 +212,8 @@ std::unique_ptr<Mode> CreateMode(const ArgumentParser &argParser)
         {
             throw std::invalid_argument("Filter não pode estar vazio no modo Scale...");
         }
+
+        return std::make_unique<ScaleMode>(filter, folder, amount);
     }
 
     return nullptr;

@@ -3,9 +3,7 @@
 #include <iostream>
 
 #include "ArgumentParser.h"
-#include "Modes/RenameMode.h"
-#include "Modes/ConvertMode.h"
-#include "Modes/ResizeMode.h"
+#include "Modes/Mode.h"
 #include "utils.h"
 
 int main(int argc, char *argv[])

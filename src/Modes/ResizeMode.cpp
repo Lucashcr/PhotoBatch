@@ -24,9 +24,11 @@ void ResizeMode::ResizeImage(const std::filesystem::path &filepath, int newWidth
     if (unsigned char *data = stbi_load(filepath.string().c_str(), &width, &height, &numComps, 4))
     {
         const int numOutputPixels = newWidth * newHeight * numCompReq;
-        unsigned char outputData[numOutputPixels];
+        unsigned char outputData[numOutputPixels] = {0};
 
-        const int resizeResult = stbir_resize_uint8(data, width, height, 0, outputData, newWidth, newHeight, 0, numCompReq);
+        const int resizeResult = stbir_resize_uint8(
+            data, width, height, 0,
+            outputData, newWidth, newHeight, 0, numCompReq);
 
         if (resizeResult == 0)
             std::cerr << GetModeName() << "Erro ao redimensionar " << filepath << std::endl;
