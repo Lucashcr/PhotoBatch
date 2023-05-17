@@ -101,8 +101,8 @@ void Image::resize(int width, int height)
     {
         m_width = width;
         m_height = height;
-        delete[] m_data;
-        m_data = outputData;
+        m_data = (unsigned char *)realloc(m_data, numOutputPixels);
+        memcpy(m_data, outputData, numOutputPixels);
     }
 
     writeFile(m_filepath, Format::PNG);
@@ -110,7 +110,5 @@ void Image::resize(int width, int height)
 
 void Image::scale(float amount)
 {
-    m_width *= amount;
-    m_height *= amount;
-    resize(m_width, m_height);
+    resize(m_width * amount, m_height * amount);
 }
